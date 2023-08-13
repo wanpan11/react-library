@@ -1,9 +1,9 @@
-import React from 'react';
-import { Route } from 'react-router-dom';
-import styled from 'styled-components';
+import { ReactElement } from "react";
+import styled from "styled-components";
+import { Route, HistoryRouterProps } from "react-router-dom";
 
-const CacheRouteDiv = styled.div`
-  display: ${(props) => (props.show ? 'block' : 'none')};
+const CacheRouteDiv = styled.div<{ show: boolean }>`
+  display: ${(props: any) => (props.show ? "block" : "none")};
   width: 100%;
   height: 100%;
 `;
@@ -14,24 +14,30 @@ const CacheRouteDiv = styled.div`
  * @param {children} children function_or_component 如果是函数会接收 history 作为参数，组件则直接渲染
  * @returns
  */
-export default function CacheRoute({ path, children }) {
+export default function CacheRoute({
+  path,
+  render,
+}: {
+  path: string;
+  render: (history: HistoryRouterProps["history"]) => ReactElement;
+}) {
   return (
     <Route>
-      {(history) => {
+      {/* {(history: HistoryRouterProps["history"]): ReactElement => {
         const {
           location: { pathname },
         } = history;
 
         if (pathname.indexOf(path)) {
-          return null;
+          return <></>;
         }
 
         return (
           <CacheRouteDiv show={pathname === path}>
-            {children(history)}
+            {render(history)}
           </CacheRouteDiv>
         );
-      }}
+      }} */}
     </Route>
   );
 }
