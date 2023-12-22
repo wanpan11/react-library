@@ -1,6 +1,6 @@
-import { ReactElement } from "react";
+import { useMemo } from "react";
+import { Route, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { Route, HistoryRouterProps } from "react-router-dom";
 
 const CacheRouteDiv = styled.div<{ show: boolean }>`
   display: ${(props: any) => (props.show ? "block" : "none")};
@@ -8,36 +8,54 @@ const CacheRouteDiv = styled.div<{ show: boolean }>`
   height: 100%;
 `;
 
-/**
- * @description  当前 url 与 path模糊匹配时缓存组件, 当前 url 与 path相同时展示组件， 不要放在 Switch 中
- * @param {string} path string 需要开启缓存的路径 模糊匹配
- * @param {children} children function_or_component 如果是函数会接收 history 作为参数，组件则直接渲染
- * @returns
- */
-export default function CacheRoute({
+function CacheRoute({
   path,
-  render,
+  cachePath,
+  children,
 }: {
   path: string;
-  render: (history: HistoryRouterProps["history"]) => ReactElement;
+  cachePath: string;
+  children: React.ReactNode;
 }) {
-  return (
-    <Route>
-      {/* {(history: HistoryRouterProps["history"]): ReactElement => {
-        const {
-          location: { pathname },
-        } = history;
+  const { pathname } = useLocation();
 
-        if (pathname.indexOf(path)) {
-          return <></>;
-        }
-
-        return (
-          <CacheRouteDiv show={pathname === path}>
-            {render(history)}
-          </CacheRouteDiv>
-        );
-      }} */}
-    </Route>
+  return useMemo(
+    () =>
+      !pathname.includes(cachePath) ? (
+        <></>
+      ) : (
+        <CacheRouteDiv show={pathname === path}>{children}</CacheRouteDiv>
+      ),
+    [children, cachePath, path, pathname]
   );
 }
+
+/**
+ * @description  当前 pathname 与 path 模糊匹配时缓存组件, 当前 pathname 与 path 相同时展示组件
+ * @param {string} path 需要展示的路径
+ * @param {cachePath} path 需要开始缓存的路径
+ * @param {component} component
+ * @returns
+ */
+export const cacheRoute = ({
+  path,
+  cachePath,
+  component,
+}: {
+  path: string;
+  cachePath: string;
+  component: React.ReactNode;
+}) => {
+  const Component = (
+    <CacheRoute path={path} cachePath={cachePath}>
+      {component}
+    </CacheRoute>
+  );
+
+  return (
+    <>
+      <Route path={path} element={Component} />
+      <Route path={cachePath} element={Component} />
+    </>
+  );
+};

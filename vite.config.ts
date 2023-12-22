@@ -16,7 +16,5 @@ export default defineConfig(() => {
     },
   };
 
-  console.log("config ===> ", config);
-
   return config;
 });
