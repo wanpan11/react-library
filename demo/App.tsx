@@ -1,13 +1,7 @@
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  useNavigate,
-  Outlet,
-} from "react-router-dom";
+import { useState } from "react";
+import { BrowserRouter, Route, Routes, useNavigate, Outlet } from "react-router-dom";
 import { cacheRoute } from "@pak/index";
 import containerStore from "./store";
-import { useState } from "react";
 
 const Test_1 = () => {
   const store = containerStore.useContainer(state => [state.name]);

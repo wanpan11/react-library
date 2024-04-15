@@ -1,22 +1,7 @@
-import { useMemo } from "react";
+import { useMemo, cloneElement } from "react";
 import { Route, useLocation } from "react-router-dom";
-import styled from "styled-components";
 
-const CacheRouteDiv = styled.div<{ show: boolean }>`
-  display: ${(props: any) => (props.show ? "block" : "none")};
-  width: 100%;
-  height: 100%;
-`;
-
-function CacheRoute({
-  path,
-  cachePath,
-  children,
-}: {
-  path: string;
-  cachePath: string;
-  children: React.ReactNode;
-}) {
+function CacheRoute({ path, cachePath, children }: { path: string; cachePath: string; children: React.ReactElement }) {
   const { pathname } = useLocation();
 
   return useMemo(
@@ -24,9 +9,11 @@ function CacheRoute({
       !pathname.includes(cachePath) ? (
         <></>
       ) : (
-        <CacheRouteDiv show={pathname === path}>{children}</CacheRouteDiv>
+        cloneElement(children, {
+          style: { display: pathname !== path ? "none" : "" },
+        })
       ),
-    [children, cachePath, path, pathname]
+    [children, cachePath, path, pathname],
   );
 }
 
@@ -37,15 +24,7 @@ function CacheRoute({
  * @param {component} component
  * @returns
  */
-export const cacheRoute = ({
-  path,
-  cachePath,
-  component,
-}: {
-  path: string;
-  cachePath: string;
-  component: React.ReactNode;
-}) => {
+export const cacheRoute = ({ path, cachePath, component }: { path: string; cachePath: string; component: React.ReactElement }) => {
   const Component = (
     <CacheRoute path={path} cachePath={cachePath}>
       {component}

@@ -8,5 +8,5 @@ const root = createRoot(dom);
 root.render(
   <StrictMode>
     <App />
-  </StrictMode>
+  </StrictMode>,
 );

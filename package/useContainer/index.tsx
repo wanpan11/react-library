@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useRef,
-  ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useState, useRef, ReactNode } from "react";
 import { nanoid } from "nanoid";
 import { shallowEqual } from "shallow-equal";
 
@@ -21,18 +14,12 @@ function createContainer<T>(initData: T) {
     observers: {},
   });
 
-  const Provider = function ({
-    children,
-  }: {
-    children: ReactNode[] | ReactNode;
-  }) {
+  const Provider = function ({ children }: { children: ReactNode[] | ReactNode }) {
     // dispatch 更新 state
     const [state, setState] = useState(initData);
 
     // 创建一个稳定的 context value 不使用 react 的rerender
-    const { current: observableValue } = useRef<
-      Observer<T, React.Dispatch<React.SetStateAction<T>>>
-    >({
+    const { current: observableValue } = useRef<Observer<T, React.Dispatch<React.SetStateAction<T>>>>({
       state: { ...state, dataChange: setState },
       observers: {}, // 观察者
     });
@@ -40,24 +27,15 @@ function createContainer<T>(initData: T) {
 
     // state 更新 通知观察者 组件更新
     useEffect(() => {
-      Object.keys(observableValue.observers).forEach(key =>
-        observableValue.observers[key]()
-      );
+      Object.keys(observableValue.observers).forEach(key => observableValue.observers[key]());
     });
 
-    return (
-      <ObservableContext.Provider value={observableValue}>
-        {children}
-      </ObservableContext.Provider>
-    );
+    return <ObservableContext.Provider value={observableValue}>{children}</ObservableContext.Provider>;
   };
 
   const useContainer = function (_depCb: (state: T) => any[]) {
     // 获取 context 值
-    const observableValue =
-      useContext<Observer<T, React.Dispatch<React.SetStateAction<T>>>>(
-        ObservableContext
-      );
+    const observableValue = useContext<Observer<T, React.Dispatch<React.SetStateAction<T>>>>(ObservableContext);
 
     // 创建强制更新方法
     const [newState, forceUpdate] = useState(observableValue.state);

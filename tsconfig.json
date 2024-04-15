@@ -19,5 +19,5 @@
       "@pak/*": ["package/*"]
     }
   },
-  "include": ["./package/", "./test/"]
+  "include": ["./package/", "./test/", "./demo/"]
 }

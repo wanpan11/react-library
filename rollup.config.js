@@ -7,10 +7,7 @@ const getFileUrl = path => {
 };
 
 export default {
-  input: [
-    getFileUrl("./package/useContainer/index.tsx"),
-    getFileUrl("./package/CacheRoute/index.tsx"),
-  ],
+  input: [getFileUrl("./package/useContainer/index.tsx"), getFileUrl("./package/CacheRoute/index.tsx")],
   output: {
     dir: "dist",
     entryFileNames: "[name]-[format].js",
