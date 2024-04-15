@@ -7,10 +7,13 @@ const getFileUrl = path => {
 };
 
 export default {
-  input: [getFileUrl("./package/useContainer/index.tsx"), getFileUrl("./package/CacheRoute/index.tsx")],
+  input: {
+    createContainer: getFileUrl("./package/createContainer/index.tsx"),
+    cacheRoute: getFileUrl("./package/cacheRoute/index.tsx"),
+  },
   output: {
     dir: "dist",
     entryFileNames: "[name]-[format].js",
   },
-  plugins: [typescript(), babel()],
+  plugins: [typescript(), babel({ babelHelpers: "runtime" })],
 };

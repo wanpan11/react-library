@@ -2,15 +2,16 @@ import { createContext, useContext, useEffect, useState, useRef, ReactNode } fro
 import { nanoid } from "nanoid";
 import { shallowEqual } from "shallow-equal";
 
-interface Observer<S, D = any> {
-  state: S & { dataChange: D };
-  observers: Record<string, () => void>;
+interface Observer<S> {
+  state: S;
+  setState?: React.Dispatch<React.SetStateAction<S>>;
+  readonly observers: Record<string, () => void>;
 }
 
 function createContainer<T>(initData: T) {
-  // 创建 context
   const ObservableContext = createContext<Observer<T>>({
-    state: { ...initData, dataChange: null },
+    state: { ...initData },
+    setState: undefined,
     observers: {},
   });
 
@@ -19,11 +20,13 @@ function createContainer<T>(initData: T) {
     const [state, setState] = useState(initData);
 
     // 创建一个稳定的 context value 不使用 react 的rerender
-    const { current: observableValue } = useRef<Observer<T, React.Dispatch<React.SetStateAction<T>>>>({
-      state: { ...state, dataChange: setState },
+    const { current: observableValue } = useRef<Observer<T>>({
+      state: state,
+      setState,
       observers: {}, // 观察者
     });
-    observableValue.state = { ...state, dataChange: setState };
+    observableValue.state = state;
+    observableValue.setState = setState;
 
     // state 更新 通知观察者 组件更新
     useEffect(() => {
@@ -33,29 +36,30 @@ function createContainer<T>(initData: T) {
     return <ObservableContext.Provider value={observableValue}>{children}</ObservableContext.Provider>;
   };
 
-  const useContainer = function (_depCb: (state: T) => any[]) {
+  const useContainer = function (setDep: (state: T) => any[]): [T, React.Dispatch<React.SetStateAction<T>>] {
     // 获取 context 值
-    const observableValue = useContext<Observer<T, React.Dispatch<React.SetStateAction<T>>>>(ObservableContext);
+    const observableValue = useContext<Observer<T>>(ObservableContext);
 
     // 创建强制更新方法
     const [newState, forceUpdate] = useState(observableValue.state);
 
-    const depCbRef = useRef(_depCb);
-    const prevDepsRef = useRef<any>([]); // 历史依赖
+    const depRef = useRef(setDep);
+    const prevDepRef = useRef<any>([]); // 历史依赖
 
     // 创建观察者
     useEffect(() => {
       const key = nanoid();
+
       const observer = () => {
-        const prev = prevDepsRef.current;
-        const cur = depCbRef.current(observableValue.state);
+        const prev = prevDepRef.current;
+        const cur = depRef.current(observableValue.state);
 
         // 通过浅比较，来判断依赖是否有变化
         if (!shallowEqual(prev, cur)) {
           forceUpdate(observableValue?.state); // 触发渲染
         }
 
-        prevDepsRef.current = cur;
+        prevDepRef.current = cur;
       };
       observableValue.observers[key] = observer;
 
@@ -66,10 +70,10 @@ function createContainer<T>(initData: T) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return newState;
+    return [newState, observableValue.setState!];
   };
 
   return { Provider, useContainer };
 }
 
-export { createContainer };
+export default createContainer;

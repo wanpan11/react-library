@@ -1,40 +1,21 @@
-import { useMemo, cloneElement } from "react";
+import { memo } from "react";
 import { Route, useLocation } from "react-router-dom";
 
-function CacheRoute({ path, cachePath, children }: { path: string; cachePath: string; children: React.ReactElement }) {
+const CacheWarp = memo(({ path, component }: { path: string; component: React.ReactElement }) => {
   const { pathname } = useLocation();
+  return <div style={{ display: pathname === path ? "" : "none" }}>{component}</div>;
+});
+CacheWarp.displayName = "CacheWarp";
 
-  return useMemo(
-    () =>
-      !pathname.includes(cachePath) ? (
-        <></>
-      ) : (
-        cloneElement(children, {
-          style: { display: pathname !== path ? "none" : "" },
-        })
-      ),
-    [children, cachePath, path, pathname],
-  );
-}
-
-/**
- * @description  当前 pathname 与 path 模糊匹配时缓存组件, 当前 pathname 与 path 相同时展示组件
- * @param {string} path 需要展示的路径
- * @param {cachePath} path 需要开始缓存的路径
- * @param {component} component
- * @returns
- */
-export const cacheRoute = ({ path, cachePath, component }: { path: string; cachePath: string; component: React.ReactElement }) => {
-  const Component = (
-    <CacheRoute path={path} cachePath={cachePath}>
-      {component}
-    </CacheRoute>
-  );
+function cacheRoute(cachePath: string, path: string, component: React.ReactElement) {
+  const node = <CacheWarp path={path} component={component} />;
 
   return (
     <>
-      <Route path={path} element={Component} />
-      <Route path={cachePath} element={Component} />
+      <Route path={cachePath} element={node} />
+      <Route path={path} element={node} />
     </>
   );
-};
+}
+
+export default cacheRoute;
