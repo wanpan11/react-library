@@ -8,6 +8,11 @@ interface Observer<S> {
   readonly observers: Record<string, () => void>;
 }
 
+/**
+ * 创建一个 contextStore 消费者会在订阅的属性变化后才会 rerender
+ * @param initData 初始数据
+ * @returns
+ */
 function createContainer<T>(initData: T) {
   const ObservableContext = createContext<Observer<T>>({
     state: { ...initData },

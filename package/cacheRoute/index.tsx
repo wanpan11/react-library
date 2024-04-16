@@ -7,6 +7,12 @@ const CacheWarp = memo(({ path, component }: { path: string; component: React.Re
 });
 CacheWarp.displayName = "CacheWarp";
 
+/**
+ * 缓存路由
+ * @param cachePath 缓存路由
+ * @param path 展示路由
+ * @param component 组件
+ */
 function cacheRoute(cachePath: string, path: string, component: React.ReactElement) {
   const node = <CacheWarp path={path} component={component} />;
 

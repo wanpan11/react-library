@@ -2,24 +2,25 @@ import cacheRoute from "@pak/cacheRoute";
 import { useState } from "react";
 import { BrowserRouter, Routes, useNavigate } from "react-router-dom";
 
-const Test_3 = () => {
+const Test_1 = () => {
   const navigate = useNavigate();
   return (
     <>
-      <button onClick={() => navigate("/")}>缓存 /</button>
-      <button onClick={() => navigate("show")} style={{ margin: "0 12px" }}>
-        显示 /show
+      <button onClick={() => navigate("/")}>cachePage /</button>
+
+      <button onClick={() => navigate("cache")} style={{ margin: "0 12px" }}>
+        otherPage /cache
       </button>
     </>
   );
 };
 
-const Test_4 = () => {
+const Test_2 = () => {
   const [data, setData] = useState<any>(1);
 
   return (
     <div>
-      <span>show</span>
+      <span>cachePage</span>
 
       <button style={{ margin: "10px" }} onClick={() => setData(data + 1)}>
         当前 data ：{data}
@@ -31,8 +32,8 @@ const Test_4 = () => {
 const CacheTest = () => {
   return (
     <BrowserRouter>
-      <Test_3 />
-      <Routes>{cacheRoute("/", "/show", <Test_4 />)}</Routes>
+      <Test_1 />
+      <Routes>{cacheRoute("/cache", "/", <Test_2 />)}</Routes>
     </BrowserRouter>
   );
 };
