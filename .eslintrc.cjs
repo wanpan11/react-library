@@ -48,5 +48,5 @@ module.exports = {
     "@typescript-eslint/no-non-null-assertion": 0,
   },
   // 过滤文件
-  ignorePatterns: ["dist", "node_modules", "pnpm-lock", ".env*"],
+  ignorePatterns: ["dist", "node_modules", "pnpm-lock", "pnpm-workspace.yaml", "pnpm-lock.yaml", "**/*.html"],
 };
