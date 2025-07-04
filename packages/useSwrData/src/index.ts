@@ -3,10 +3,10 @@ import useSwr from "swr";
 import { useCallback, useMemo, useState } from "react";
 import { DEFAULT_PAGE } from "./common";
 
-export function useSwrData<R = any, P = any>(props: UseSwrDataFullProps<P, R> & { paging: true }): UseSwrPagIngDataPage<P, R>;
-export function useSwrData<R = any, P = any>(props: UseSwrDataProps<P, R> & { paging?: false }): UseSwrData<R>;
+function useSwrData<R = any, P = any>(props: UseSwrDataFullProps<P, R> & { paging: true }): UseSwrPagIngDataPage<P, R>;
+function useSwrData<R = any, P = any>(props: UseSwrDataProps<P, R> & { paging?: false }): UseSwrData<R>;
 
-export function useSwrData<R = any, P = any>(props: UseSwrDataFullProps<P, R>): UseSwrData<R> | UseSwrPagIngDataPage<P, R> {
+function useSwrData<R = any, P = any>(props: UseSwrDataFullProps<P, R>): UseSwrData<R> | UseSwrPagIngDataPage<P, R> {
   const { reqKey, req, params, ready = true, paging = false, defaultSearch, defaultPage = DEFAULT_PAGE, swrConfig } = props;
 
   const [pageInfo, setPage] = useState(defaultPage);
@@ -64,3 +64,5 @@ export function useSwrData<R = any, P = any>(props: UseSwrDataFullProps<P, R>): 
     };
   }
 }
+
+export default useSwrData;

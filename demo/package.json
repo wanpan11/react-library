@@ -9,10 +9,7 @@
   "license": "ISC",
   "dependencies": {
     "cache-route": "workspace:*",
-    "create-container": "workspace:*",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-router-dom": "^6.30.1"
+    "create-container": "workspace:*"
   },
   "devDependencies": {
     "vite": "^7.0.1"

@@ -2,13 +2,16 @@ import typescript from "@rollup/plugin-typescript";
 
 export default {
   input: "./src/index.ts",
-  output: {
-    dir: "dist",
-    entryFileNames: "[name]-[format].js",
-  },
+  output: { dir: "dist" },
+  external: ["react", "react-dom", "react-router-dom", "react/jsx-runtime"],
   plugins: [
     typescript({
-      compilerOptions: { declaration: true, declarationDir: "./dist/types" },
+      tsconfig: "../../tsconfig.json",
+      compilerOptions: {
+        declaration: true,
+        declarationDir: "./dist/types",
+        outDir: "./dist",
+      },
     }),
   ],
 };
