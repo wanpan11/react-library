@@ -9,7 +9,8 @@
   "license": "ISC",
   "dependencies": {
     "cache-route": "workspace:*",
-    "create-container": "workspace:*"
+    "create-container": "workspace:*",
+    "use-swr-data": "workspace:*"
   },
   "devDependencies": {
     "vite": "^7.0.1"

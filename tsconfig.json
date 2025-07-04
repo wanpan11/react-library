@@ -16,5 +16,5 @@
     "jsx": "react-jsx",
     "baseUrl": "."
   },
-  "include": ["./packages/**/*", "./test"]
+  "include": ["./packages/**/*", "vitest.config.ts"]
 }

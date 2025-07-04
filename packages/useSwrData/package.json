@@ -4,9 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "main": "./dist/index.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/types/src",
   "files": [
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
   "scripts": {
     "build": "rollup -c"
