@@ -15,7 +15,7 @@ export default {
       plugins: [terser()],
     },
   ],
-  external: ["react", "react-dom", "react-router-dom", "react/jsx-runtime"],
+  external: ["react", "react/jsx-runtime"],
   plugins: [
     del({ targets: "dist/*" }),
     typescript({

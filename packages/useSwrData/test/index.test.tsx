@@ -1,8 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi, afterEach } from "vitest";
 import { render, fireEvent } from "@testing-library/react";
 
 import useSwrData from "../src/index";
-import { afterEach } from "node:test";
 import { AnyObject, BaseSwrProps, BaseSwrResult, PagingSwrProps, PagingSwrResult } from "../src/interface";
 
 type ObjParams = { name: string; age: number; type: string; value: string };
