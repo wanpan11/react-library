@@ -18,7 +18,6 @@ const reSetMock = () => {
 function object(data: ObjParams) {
   return new Promise<ObjParams>(resolve => {
     setTimeout(() => {
-      console.log("[ data ] ===>", data);
       getReqParams(data);
       resolve(data);
     }, 1000);
