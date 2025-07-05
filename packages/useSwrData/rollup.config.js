@@ -15,7 +15,7 @@ export default {
       plugins: [terser()],
     },
   ],
-  external: ["react", "react/jsx-runtime"],
+  external: ["react", "react/jsx-runtime", "swr"],
   plugins: [
     del({ targets: "dist/*" }),
     typescript({
