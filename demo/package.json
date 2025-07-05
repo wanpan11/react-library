@@ -1,0 +1,18 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "main": "main.ts",
+  "scripts": {
+    "dev": "vite"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cache-route": "workspace:*",
+    "create-container": "workspace:*",
+    "use-swr-data": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "^7.0.1"
+  }
+}

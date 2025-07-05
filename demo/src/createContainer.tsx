@@ -1,4 +1,4 @@
-import createContainer from "@pak/createContainer";
+import createContainer from "create-container";
 
 interface Store {
   name: string;

@@ -1,4 +1,4 @@
-import cacheRoute from "@pak/cacheRoute";
+import cacheRoute from "cache-route";
 import { useState } from "react";
 import { BrowserRouter, Routes, useNavigate } from "react-router-dom";
 

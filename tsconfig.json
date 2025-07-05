@@ -14,10 +14,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
-    "paths": {
-      "@pak/*": ["package/*"]
-    }
+    "baseUrl": "."
   },
-  "include": ["./package/", "./test/", "./demo/"]
+  "include": ["./packages/**/*", "vitest.config.ts"]
 }

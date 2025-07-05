@@ -1,0 +1,20 @@
+{
+  "name": "create-container",
+  "description": "",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nanoid": "^5.1.5",
+    "shallow-equal": "^3.1.0"
+  }
+}
