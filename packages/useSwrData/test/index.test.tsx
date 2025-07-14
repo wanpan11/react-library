@@ -1,29 +1,29 @@
-import { beforeEach, describe, expect, it, vi, afterEach } from "vitest";
-import { render, fireEvent } from "@testing-library/react";
+import type { AnyObject, BaseSwrProps, BaseSwrResult, PagingSwrProps, PagingSwrResult } from "../src/interface";
+import { fireEvent, render } from "@testing-library/react";
 
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import useSwrData from "../src/index";
-import { AnyObject, BaseSwrProps, BaseSwrResult, PagingSwrProps, PagingSwrResult } from "../src/interface";
 
-type ObjParams = { name: string; age: number; type: string; value: string };
+interface ObjParams { name: string; age: number; type: string; value: string }
 type NumParams = number;
 
 const getResData = vi.fn(data => data);
 const getReqParams = vi.fn(data => data);
-const reSetMock = () => {
+function reSetMock() {
   getResData.mockReset();
   getReqParams.mockReset();
-};
+}
 
-function object(data: ObjParams) {
-  return new Promise<ObjParams>(resolve => {
+async function object(data: ObjParams) {
+  return new Promise<ObjParams>((resolve) => {
     setTimeout(() => {
       getReqParams(data);
       resolve(data);
     }, 1000);
   });
 }
-function num(data: NumParams) {
-  return new Promise<NumParams>(resolve => {
+async function num(data: NumParams) {
+  return new Promise<NumParams>((resolve) => {
     setTimeout(() => {
       getReqParams(data);
       resolve(data);
@@ -37,9 +37,18 @@ function TestDemo<P>(props: BaseSwrProps<P>) {
 
   return (
     <div>
-      <div>data: {JSON.stringify(swrData.data)}</div>
-      <div>isLoading: {String(swrData.isLoading)}</div>
-      <div>error: {String(swrData.error)}</div>
+      <div>
+        data:
+        {JSON.stringify(swrData.data)}
+      </div>
+      <div>
+        isLoading:
+        {String(swrData.isLoading)}
+      </div>
+      <div>
+        error:
+        {String(swrData.error)}
+      </div>
     </div>
   );
 }
@@ -50,6 +59,7 @@ function TestDemoPaging<P extends AnyObject>(props: PagingSwrProps<P, P>) {
   return (
     <div>
       <button
+        type="button"
         className="page_btn"
         onClick={() => {
           swrData.setPage({ pageNum: swrData.pageInfo.pageNum + 1, pageSize: swrData.pageInfo.pageSize });
@@ -57,6 +67,7 @@ function TestDemoPaging<P extends AnyObject>(props: PagingSwrProps<P, P>) {
       />
 
       <button
+        type="button"
         className="search_btn"
         onClick={() => {
           swrData.setSearch({ type: "search", value: "search" } as unknown as Partial<P>);
@@ -64,6 +75,7 @@ function TestDemoPaging<P extends AnyObject>(props: PagingSwrProps<P, P>) {
       />
 
       <button
+        type="button"
         className="search_btn_1"
         onClick={() => {
           swrData.onSearch(undefined);
@@ -84,7 +96,7 @@ describe("suite", () => {
   });
 
   it("base params test", async () => {
-    render(<TestDemo<NumParams> reqKey={"base"} req={num} params={1} />);
+    render(<TestDemo<NumParams> reqKey="base" req={num} params={1} />);
     await vi.advanceTimersByTimeAsync(2000);
     const res_1 = getResData.mock.calls.findLast(() => true)?.[0] as BaseSwrResult<any>;
 
@@ -102,7 +114,7 @@ describe("suite", () => {
   });
 
   it("paging params test", async () => {
-    const { rerender } = render(<TestDemoPaging<ObjParams> reqKey={"paging"} req={object} params={{ name: "test", age: 18 }} paging />);
+    const { rerender } = render(<TestDemoPaging<ObjParams> reqKey="paging" req={object} params={{ name: "test", age: 18 }} paging />);
     await vi.advanceTimersByTimeAsync(2000);
     const res_1 = getResData.mock.calls.findLast(() => true)?.[0] as PagingSwrResult;
 
@@ -120,7 +132,7 @@ describe("suite", () => {
   });
 
   it("pageChange test", async () => {
-    const { container } = render(<TestDemoPaging<ObjParams> reqKey={"paging"} req={object} params={{ name: "test", age: 18 }} paging />);
+    const { container } = render(<TestDemoPaging<ObjParams> reqKey="paging" req={object} params={{ name: "test", age: 18 }} paging />);
     await vi.advanceTimersByTimeAsync(2000);
 
     fireEvent(container.querySelector(".page_btn")!, new MouseEvent("click", { bubbles: true }));
@@ -130,7 +142,7 @@ describe("suite", () => {
   });
 
   it("search test", async () => {
-    const { container, rerender } = render(<TestDemoPaging<ObjParams> reqKey={"paging"} req={object} params={{ name: "test", age: 18 }} paging />);
+    const { container, rerender } = render(<TestDemoPaging<ObjParams> reqKey="paging" req={object} params={{ name: "test", age: 18 }} paging />);
     await vi.advanceTimersByTimeAsync(2000);
 
     fireEvent(container.querySelector(".search_btn")!, new MouseEvent("click", { bubbles: true }));
@@ -142,7 +154,7 @@ describe("suite", () => {
     reSetMock();
 
     /* 2 */
-    rerender(<TestDemoPaging<ObjParams> reqKey={"paging-2"} req={object} params={{ name: "test", age: 18 }} defaultSearch={{ type: "defaultSearch" }} paging />);
+    rerender(<TestDemoPaging<ObjParams> reqKey="paging-2" req={object} params={{ name: "test", age: 18 }} defaultSearch={{ type: "defaultSearch" }} paging />);
     await vi.advanceTimersByTimeAsync(2000);
 
     fireEvent(container.querySelector(".search_btn_1")!, new MouseEvent("click", { bubbles: true }));

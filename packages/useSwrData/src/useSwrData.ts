@@ -1,8 +1,8 @@
 import type { Key } from "swr";
-import useSwr from "swr";
+import type { AnyObject, BaseSwrProps, BaseSwrResult, PagingSwrProps, PagingSwrResult, SimpleKey } from "./interface";
 import { useCallback, useMemo, useState } from "react";
+import useSwr from "swr";
 import { DEFAULT_PAGE } from "./common";
-import { AnyObject, BaseSwrProps, BaseSwrResult, PagingSwrProps, PagingSwrResult, SimpleKey } from "./interface";
 
 function useSwrData<TData = any, TParams = any>(props: BaseSwrProps<TData, TParams>): BaseSwrResult<TData>;
 function useSwrData<TData = any, TParams extends AnyObject = any>(props: PagingSwrProps<TData, TParams>): PagingSwrResult<TData, TParams>;
@@ -23,7 +23,8 @@ function useSwrData<TData = any, TParams extends AnyObject = any>(props: BaseSwr
     let mergeParams: any = {};
     if (paging) {
       mergeParams = { ...pageInfo, ...searchInfo, ...params };
-    } else {
+    }
+    else {
       mergeParams = params;
     }
 
@@ -49,7 +50,7 @@ function useSwrData<TData = any, TParams extends AnyObject = any>(props: BaseSwr
   if (paging) {
     return {
       key: mergeKey,
-      data: data,
+      data,
       error,
       isLoading,
       refresh: mutate,
@@ -59,10 +60,11 @@ function useSwrData<TData = any, TParams extends AnyObject = any>(props: BaseSwr
       setPage,
       setSearch,
     };
-  } else {
+  }
+  else {
     return {
       key: mergeKey,
-      data: data,
+      data,
       error,
       isLoading,
       refresh: mutate,

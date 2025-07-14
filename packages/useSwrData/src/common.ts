@@ -1,3 +1,3 @@
-import { PageInfo } from "./interface";
+import type { PageInfo } from "./interface";
 
 export const DEFAULT_PAGE: PageInfo = { pageNum: 1, pageSize: 10 };

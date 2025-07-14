@@ -13,11 +13,11 @@
 ## 安装
 
 ```bash
-npm install use-swr-data
+npm install @wanp/use-swr-data
 # 或
-yarn add use-swr-data
+yarn add @wanp/use-swr-data
 # 或
-pnpm add use-swr-data
+pnpm add @wanp/use-swr-data
 ```
 
 ## [查看 API](https://github.com/wanpan11/react-library/tree/main/packages/useSwrData)

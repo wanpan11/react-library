@@ -1,8 +1,8 @@
-import useSwrData from "use-swr-data";
+import useSwrData from "@wanp/use-swr-data";
 
-type ObjParams = { name: string; age: number; type: string; value: string };
-function object(data: ObjParams) {
-  return new Promise<ObjParams>(resolve => {
+interface ObjParams { name: string; age: number; type: string; value: string }
+async function object(data: ObjParams) {
+  return new Promise<ObjParams>((resolve) => {
     setTimeout(() => {
       console.log("[ data ] ===>", data);
       resolve(data);
@@ -10,7 +10,7 @@ function object(data: ObjParams) {
   });
 }
 
-const Demo = () => {
+function Demo() {
   const { data } = useSwrData({
     reqKey: "111",
     req: object,
@@ -20,6 +20,6 @@ const Demo = () => {
   console.log("[ data ] ===>", data?.age);
 
   return <div>useSwrData</div>;
-};
+}
 
 export default Demo;

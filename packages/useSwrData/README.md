@@ -13,17 +13,17 @@
 ## 安装
 
 ```bash
-npm install use-swr-data
+npm install u@wanp/use-swr-data
 # 或
-yarn add use-swr-data
+yarn add @wanp/use-swr-data
 # 或
-pnpm add use-swr-data
+pnpm add @wanp/use-swr-data
 ```
 
 ## 基础使用
 
 ```typescript
-import useSwrData from "use-swr-data";
+import useSwrData from "@wanp/use-swr-data";
 
 // 基础数据请求
 const { data, error, isLoading, refresh } = useSwrData({

@@ -1,5 +1,6 @@
-import { createContext, useContext, useEffect, useState, useRef, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { nanoid } from "nanoid";
+import { createContext, use, useEffect, useRef, useState } from "react";
 import { shallowEqual } from "shallow-equal";
 
 interface Observer<S> {
@@ -11,7 +12,6 @@ interface Observer<S> {
 /**
  * 创建一个 contextStore 消费者会在订阅的属性变化后才会 rerender
  * @param initData 初始数据
- * @returns
  */
 function createContainer<T>(initData: T) {
   const ObservableContext = createContext<Observer<T>>({
@@ -26,7 +26,7 @@ function createContainer<T>(initData: T) {
 
     // 创建一个稳定的 context value 不使用 react 的rerender
     const { current: observableValue } = useRef<Observer<T>>({
-      state: state,
+      state,
       setState,
       observers: {}, // 观察者
     });
@@ -38,12 +38,12 @@ function createContainer<T>(initData: T) {
       Object.keys(observableValue.observers).forEach(key => observableValue.observers[key]());
     });
 
-    return <ObservableContext.Provider value={observableValue}>{children}</ObservableContext.Provider>;
+    return <ObservableContext value={observableValue}>{children}</ObservableContext>;
   };
 
   const useContainer = function (setDep: (state: T) => any[]): [T, React.Dispatch<React.SetStateAction<T>>] {
     // 获取 context 值
-    const observableValue = useContext<Observer<T>>(ObservableContext);
+    const observableValue = use<Observer<T>>(ObservableContext);
 
     // 创建强制更新方法
     const [newState, forceUpdate] = useState(observableValue.state);

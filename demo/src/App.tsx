@@ -1,7 +1,7 @@
-import StoreTest from "./createContainer";
 import CacheTest from "./cacheRoute";
+import StoreTest from "./createContainer";
 
-const App = () => {
+function App() {
   return (
     <>
       <h1>cacheRoute</h1>
@@ -13,6 +13,6 @@ const App = () => {
       <StoreTest />
     </>
   );
-};
+}
 
 export default App;
