@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "use-swr-data is a React hook that simplifies data fetching and caching using SWR (stale-while-revalidate) strategy.",
   "homepage": "https://github.com/wanpan11/react-library/tree/main/packages/useSwrData",
-  "repository": "https://github.com/wanpan11/react-library",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wanpan11/react-library.git"
+  },
   "keywords": [
     "react",
     "react-request",
@@ -11,7 +14,7 @@
     "react-swr"
   ],
   "author": "wanp11",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
