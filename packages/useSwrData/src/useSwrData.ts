@@ -1,4 +1,4 @@
-import type { Key } from "swr";
+import type { Key, SWRConfiguration } from "swr";
 import type { AnyObject, BaseSwrProps, BaseSwrResult, PagingSwrProps, PagingSwrResult, SimpleKey } from "./interface";
 import { useCallback, useMemo, useState } from "react";
 import useSwr from "swr";
@@ -35,7 +35,17 @@ function useSwrData<TData = any, TParams extends AnyObject = any>(
   }, [pageInfo, paging, params, ready, reqKey, searchInfo]);
 
   const mergeConf = useMemo(() => {
-    return swrConfig || (simple ? SIMPLE_CONF : { revalidateOnFocus: false });
+    let base: SWRConfiguration = { revalidateOnFocus: false };
+
+    if (swrConfig) {
+      base = swrConfig;
+    }
+
+    if (simple) {
+      base = { ...SIMPLE_CONF, ...base };
+    }
+
+    return base;
   }, [simple, swrConfig]);
 
   const { data, isLoading, error, mutate } = useSwr(
