@@ -2,12 +2,15 @@ import type { Key } from "swr";
 import type { AnyObject, BaseSwrProps, BaseSwrResult, PagingSwrProps, PagingSwrResult, SimpleKey } from "./interface";
 import { useCallback, useMemo, useState } from "react";
 import useSwr from "swr";
-import { DEFAULT_PAGE } from "./common";
+import { DEFAULT_PAGE, SIMPLE_CONF } from "./common";
 
 function useSwrData<TData = any, TParams = any>(props: BaseSwrProps<TData, TParams>): BaseSwrResult<TData>;
 function useSwrData<TData = any, TParams extends AnyObject = any>(props: PagingSwrProps<TData, TParams>): PagingSwrResult<TData, TParams>;
-function useSwrData<TData = any, TParams extends AnyObject = any>(props: BaseSwrProps<TData, TParams> | PagingSwrProps<TData, TParams>): BaseSwrResult<TData> | PagingSwrResult<TData, TParams> {
-  const { reqKey, req, params, ready = true, paging = false, swrConfig } = props;
+
+function useSwrData<TData = any, TParams extends AnyObject = any>(
+  props: BaseSwrProps<TData, TParams> | PagingSwrProps<TData, TParams>
+): BaseSwrResult<TData> | PagingSwrResult<TData, TParams> {
+  const { reqKey, req, params, ready = true, simple = false, paging = false, swrConfig } = props;
 
   const defaultPage = "defaultPage" in props ? props.defaultPage || DEFAULT_PAGE : DEFAULT_PAGE;
   const defaultSearch = "defaultSearch" in props ? props.defaultSearch : undefined;
@@ -31,12 +34,16 @@ function useSwrData<TData = any, TParams extends AnyObject = any>(props: BaseSwr
     return [reqKey, mergeParams];
   }, [pageInfo, paging, params, ready, reqKey, searchInfo]);
 
+  const mergeConf = useMemo(() => {
+    return swrConfig || (simple ? SIMPLE_CONF : { revalidateOnFocus: false });
+  }, [simple, swrConfig]);
+
   const { data, isLoading, error, mutate } = useSwr(
     mergeKey,
     async (data: [SimpleKey, TParams]) => {
       return req(data[1]);
     },
-    swrConfig || { revalidateOnFocus: false },
+    mergeConf
   );
 
   const onSearch = useCallback(
@@ -44,7 +51,7 @@ function useSwrData<TData = any, TParams extends AnyObject = any>(props: BaseSwr
       setSearch(value);
       setPage(defaultPage);
     },
-    [defaultPage],
+    [defaultPage]
   );
 
   if (paging) {

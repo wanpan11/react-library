@@ -12,6 +12,10 @@ export interface BaseSwrProps<TData = any, TParams = any> {
   reqKey: SimpleKey;
   req: (params: TParams) => Promise<TData>;
   ready?: boolean;
+  /*
+   * 禁用自动发送验证请求
+   */
+  simple?: boolean;
   params?: TParams extends AnyObject ? Partial<TParams> : TParams;
   paging?: undefined;
   swrConfig?: import("swr").SWRConfiguration<TData>;

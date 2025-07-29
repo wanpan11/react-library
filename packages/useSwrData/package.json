@@ -1,7 +1,7 @@
 {
   "name": "@wanp/use-swr-data",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "use-swr-data is a React hook that simplifies data fetching and caching using SWR (stale-while-revalidate) strategy.",
   "author": "wanp11",
   "license": "MIT",
