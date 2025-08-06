@@ -4,6 +4,42 @@ import { useCallback, useMemo, useState } from "react";
 import useSwr from "swr";
 import { DEFAULT_PAGE, SIMPLE_CONF } from "./common";
 
+/**
+ * 基于SWR实现的数据获取hook，支持普通数据获取和分页数据获取两种模式。
+ *
+ * @template TData - 响应数据的类型
+ * @template TParams - 请求参数的类型
+ *
+ * @param {BaseSwrProps<TData, TParams> | PagingSwrProps<TData, TParams>} props - 配置项
+ * @param {string} props.reqKey - 请求的唯一标识key
+ * @param {(params: TParams) => Promise<TData>} props.req - 数据请求函数
+ * @param {TParams} [props.params] - 请求参数
+ * @param {boolean} [props.ready] - 是否启用
+ * @param {boolean} [props.simple] - 简单模式(不自动重新请求)
+ * @param {boolean} [props.paging] - 分页模式
+ * @param {SWRConfiguration} [props.swrConfig] - SWR配置项
+ * @param {object} [props.defaultPage] - 默认分页信息(仅在 paging 模式时有效)
+ * @param {Partial<TParams>} [props.defaultSearch] - 默认搜索条件(仅在 paging 模式时有效)
+ *
+ * @returns {BaseSwrResult<TData> | PagingSwrResult<TData, TParams>} 返回SWR数据结果
+ * 对于普通模式返回：{key, data, error, isLoading, refresh}
+ * 对于分页模式额外返回：{pageInfo, searchInfo, onSearch, setPage, setSearch}
+ *
+ * @example
+ * // 普通数据获取
+ * const { data, isLoading } = useSwrData({
+ *   reqKey: 'getUserInfo',
+ *   req: (params) => fetch('/api/user').then(res => res.json()),
+ * });
+ *
+ * // 分页数据获取
+ * const { data, pageInfo, setPage, onSearch } = useSwrData({
+ *   reqKey: 'getUserList',
+ *   req: (params) => fetch('/api/users?' + new URLSearchParams(params)).then(res => res.json()),
+ *   paging: true,
+ *   defaultPage: { page: 1, pageSize: 10 },
+ * });
+ */
 function useSwrData<TData = any, TParams = any>(props: BaseSwrProps<TData, TParams>): BaseSwrResult<TData>;
 function useSwrData<TData = any, TParams extends AnyObject = any>(props: PagingSwrProps<TData, TParams>): PagingSwrResult<TData, TParams>;
 
